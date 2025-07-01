@@ -1,9 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Navigate } from '@tanstack/react-router';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
+import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -22,7 +23,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useStackApp } from '@stackframe/react';
+import { useStackApp, useUser } from '@stackframe/react';
 import { toast } from 'sonner';
 
 const signUpSchema = z
@@ -41,6 +42,8 @@ const signUpSchema = z
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 function SignUpForm() {
+  const user = useUser();
+
   const app = useStackApp();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -77,6 +80,10 @@ function SignUpForm() {
 
   async function handleGoogleSignUp() {
     await app.signInWithOAuth('google');
+  }
+
+  if (user) {
+    return <Navigate to='/dashboard' />;
   }
 
   return (
@@ -155,7 +162,14 @@ function SignUpForm() {
                 className='w-full cursor-pointer'
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Signing up...' : 'Sign up'}
+                {isSubmitting ? (
+                  <div className='flex items-center gap-2'>
+                    <Loader2 className='animate-spin' />
+                    Signing up...
+                  </div>
+                ) : (
+                  'Sign up'
+                )}
               </Button>
               <div className='text-center text-sm'>
                 Already have an account?{' '}
