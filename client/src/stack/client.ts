@@ -21,4 +21,9 @@ export const stackClientApp = new StackClientApp({
       history.push(to);
     },
   },
+  urls: {
+    signIn: '/sign-in',
+    signUp: '/sign-up',
+    signOut: '/sign-out',
+  },
 });
