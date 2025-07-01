@@ -5,6 +5,8 @@ import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { routeTree } from './routeTree.gen.ts';
 import { stackClientApp } from './stack/client.ts';
 import { StackProvider, StackTheme } from '@stackframe/react';
+import './index.css';
+import { Toaster } from '@/components/ui/sonner';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <StackProvider app={stackClientApp}>
         <StackTheme>
           <RouterProvider router={router} />
+          <Toaster
+            position='top-right'
+            richColors
+          />
         </StackTheme>
       </StackProvider>
     </QueryClientProvider>
